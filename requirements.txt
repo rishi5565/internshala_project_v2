@@ -1,0 +1,4 @@
+pandas
+dvc
+numpy
+bs4
