@@ -4,14 +4,14 @@ stages:
     cmd: python src/load_validate_preprocess.py --config=params.yaml
     deps:
     - path: data/raw/raw_scraped.csv
-      md5: 67ece16e359ca1c6b4535481026037b8
-      size: 201910
+      md5: 372494cccbf00c48b9b39dcb2f70eb4f
+      size: 7072
     - path: params.yaml
-      md5: c183609af4319c8a0435ff39d049f4e5
-      size: 1183
+      md5: 78682ab870646b40d4f5d9011f418db4
+      size: 1237
     - path: src/functions.py
-      md5: 8038b30c2212483010f60cfae51139d3
-      size: 151
+      md5: cfeeb0b64d9e188fd84cce08fb871d8a
+      size: 3709
     - path: src/load_validate_preprocess.py
       md5: 0b58ba341545c9b0bde50b38bd8c8b86
       size: 1162
@@ -26,5 +26,24 @@ stages:
       size: 703
     outs:
     - path: data/processed/prp_data.csv
-      md5: 871765f4bd2ce39016f7932569c1aa70
-      size: 180912
+      md5: 97b1fa3d9d9f725492957042e97e3566
+      size: 6188
+  web_scrap data":
+    cmd: python src/webscrap_data.py --config=params.yaml
+    deps:
+    - path: params.yaml
+      md5: 78682ab870646b40d4f5d9011f418db4
+      size: 1237
+    - path: src/functions.py
+      md5: cfeeb0b64d9e188fd84cce08fb871d8a
+      size: 3709
+    - path: src/logger/myLogger.py
+      md5: 961c81f55fc6e970cb9c246f718eed46
+      size: 669
+    - path: src/webscrap_data.py
+      md5: 42ab3445d932fbbd46527f610dc91661
+      size: 707
+    outs:
+    - path: data/raw/raw_scraped.csv
+      md5: 372494cccbf00c48b9b39dcb2f70eb4f
+      size: 7072
