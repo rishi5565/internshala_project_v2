@@ -1,0 +1,30 @@
+schema: '2.0'
+stages:
+  validate_and_preprocess:
+    cmd: python src/load_validate_preprocess.py --config=params.yaml
+    deps:
+    - path: data/raw/raw_scraped.csv
+      md5: 67ece16e359ca1c6b4535481026037b8
+      size: 201910
+    - path: params.yaml
+      md5: c183609af4319c8a0435ff39d049f4e5
+      size: 1183
+    - path: src/functions.py
+      md5: 8038b30c2212483010f60cfae51139d3
+      size: 151
+    - path: src/load_validate_preprocess.py
+      md5: 0b58ba341545c9b0bde50b38bd8c8b86
+      size: 1162
+    - path: src/logger/myLogger.py
+      md5: 961c81f55fc6e970cb9c246f718eed46
+      size: 669
+    - path: src/preprocessor/preprocessor.py
+      md5: 6c6260a0380c3edfacf512967eb10c80
+      size: 2192
+    - path: src/validator/validator.py
+      md5: fa1a99e2ef00bb3a60b7493ed2e17e6c
+      size: 703
+    outs:
+    - path: data/processed/prp_data.csv
+      md5: 90ccefb3c86e73fd9262f0b77f1a7e30
+      size: 189197

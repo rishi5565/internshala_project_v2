@@ -1,15 +1,19 @@
-# stages:
-#   validate_and_save_data:
-#     cmd: python src/load_data.py --config=params.yaml
-#     deps:
-#     - src/load_data.py
-#     - src/functions.py
-#     - data_validation/validate_data.py
-#     - logger/myLogger.py
-#     - data/external/
-#     - params.yaml
-#     outs:
-#     - data/raw/master_dataset.csv
+stages:
+
+  #add web scrape stage later
+
+  validate_and_preprocess:
+    cmd: python src/load_validate_preprocess.py --config=params.yaml
+    deps:
+    - data/raw/raw_scraped.csv
+    - src/preprocessor/preprocessor.py
+    - src/validator/validator.py
+    - src/functions.py
+    - src/logger/myLogger.py
+    - src/load_validate_preprocess.py
+    - params.yaml
+    outs:
+    - data/processed/prp_data.csv
 
 #   preprocess_and_split_data:
 #     cmd: python src/preprocess_data.py --config=params.yaml

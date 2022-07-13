@@ -1,3 +1,9 @@
+data:
+  raw_data_path: data/raw/raw_scraped.csv
+  prp_data_path: data/processed/prp_data.csv
+
+
+
 base:
   project: activity_recognition_project
   target_col: label

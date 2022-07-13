@@ -51,6 +51,7 @@ class preprocess_data:
         self.prep_applicants()
         self.prep_skills()
         self.prep_perks()
+        return self.df
 
 
 
