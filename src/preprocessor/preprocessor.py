@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import ast
+from datetime import datetime
 
 class preprocess_data:
     def __init__(self, df):
@@ -12,7 +13,8 @@ class preprocess_data:
         self.df["duration"] = self.df["duration"].apply(lambda x: float(x.strip()) if x.strip().isnumeric() else np.NaN)
 
     def prep_stipend(self):
-        self.df["stipend"] = self.df["stipend"].apply(lambda x: x.split(" ")[0])
+        self.df["stipend"] = self.df["stipend"].apply(lambda x: x if (("month" in x) or ("Unpaid" in x)) else np.nan)
+        self.df["stipend"] = self.df["stipend"].dropna().apply(lambda x: x.split(" ")[0])
         self.df["stipend"] = self.df["stipend"].str.replace("Unpaid", "0")
         
         def clean_stipend(row): # a function to clean stipend, return nulls for wrong type of values
@@ -30,7 +32,11 @@ class preprocess_data:
         self.df["stipend"] = self.df["stipend"].apply(clean_stipend)
 
     def prep_apply_by(self):
-        self.df["apply_by"] = pd.to_datetime(self.df["apply_by"], errors="raise")
+        try:
+            self.df["apply_by"] = pd.to_datetime(self.df["apply_by"], errors="raise")
+        except:
+            pass
+        self.df["apply_by"] = (self.df["apply_by"] - datetime.now()).dt.days
 
     def prep_applicants(self):
         self.df["applicants"] = self.df["applicants"].str.replace("Be an early applicant", "0")

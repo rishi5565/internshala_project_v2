@@ -1,6 +1,14 @@
 stages:
 
-  #add web scrape stage later
+  web_scrap data":
+    cmd: python src/webscrap_data.py --config=params.yaml
+    deps:
+    - src/webscrap_data.py
+    - src/functions.py
+    - src/logger/myLogger.py
+    - params.yaml
+    outs:
+    - data/raw/raw_scraped.csv
 
   validate_and_preprocess:
     cmd: python src/load_validate_preprocess.py --config=params.yaml

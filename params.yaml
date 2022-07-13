@@ -3,6 +3,12 @@ data:
   prp_data_path: data/processed/prp_data.csv
 
 
+scraper:
+  args_dict_path: args_dict.json
+
+
+
+  
 
 base:
   project: activity_recognition_project
