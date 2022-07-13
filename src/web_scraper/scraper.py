@@ -3,12 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 import pandas as pd
 from tqdm import tqdm
-
-class TooManyPages(Exception):
-    def __init__(self, message="Please narrow search with filters, too many pages!"):
-        self.message = message
-        super().__init__(self.message)
-
+import os
+import sys
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+from custom_exceptions import TooManyPages
 
 def scraper(args_dict):
 
