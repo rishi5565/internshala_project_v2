@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Internshala Stats and Recommendation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <ul class="list-group"><label for="duration">
+                        <h6>Duration:</h6>
+                    </label>
+                    <li class="list-group-item">{{avg_dur}}</li>
+                    <li class="list-group-item">{{min_dur}}</li>
+                    <li class="list-group-item">{{max_dur}}</li>
+                </ul>
+
+            </div>
+            <div class="col-sm-12">
+
+                <ul class="list-group"><label for="stipend">
+                        <h6>Stipend:</h6>
+                    </label>
+                    <li class="list-group-item">{{st_avg}}</li>
+                    <li class="list-group-item">{{st_max}}</li>
+                </ul>
+                <ul class="list-group"><label for="apply_by">
+                        <h6>Apply By:</h6>
+                    </label>
+                    <li class="list-group-item">{{least_count}}</li>
+                </ul>
+                <ul class="list-group"><label for="applicants">
+                        <h6>Applicants:</h6>
+                    </label>
+                    <li class="list-group-item">{{eas}}</li>
+                    <li class="list-group-item">{{tplus}}</li>
+                    <li class="list-group-item">{{appl_avg}}</li>
+                </ul>
+                <ul class="list-group"><label for="openings">
+                        <h6>Openings:</h6>
+                    </label>
+                    <li class="list-group-item">{{avg_opn}}</li>
+                    <li class="list-group-item">{{max_opn}}</li>
+                </ul>
+                <ul class="list-group"><label for="skills">
+                        <h6>Skills:</h6>
+                    </label>
+                    <figure class="figure">
+                        <img src="/static/top10skill.png" class="figure-img img-fluid rounded">
+                    </figure>
+                </ul>
+                <ul class="list-group"><label for="perks">
+                        <h6>Perks:</h6>
+                    </label>
+                    <figure class="figure">
+                        <img src="/static/top5perk.png" class="figure-img img-fluid rounded">
+                    </figure>
+                    <ul class="list-group"><label for="all_slills"></label>
+                        <h6>List of skills:</h6>
+                        </label>
+                        <li class="list-group-item">{{all_skills}}</li>
+                    </ul>
+
+
+
+                    <div class="dropdown">
+                        <button type="button" class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            aria-expanded="false" data-bs-auto-close="outside">
+                            Get Custom Recommendations
+                        </button>
+                        <form class="dropdown-menu p-4" method="post">
+                            <div class="mb-6">
+                                <label for="dropdown_input1" class="form-label">Enter Skills in Order(Most to Least Proficient):</label>
+                                <input type="text" name="skills" class="form-control" id="skills"
+                                    placeholder="Flask, OpenCV" required>
+                            </div>
+                            <div class="mb-6">
+                                <label for="dropdown_input2" class="form-label">Enter preferred duration:</label>
+                                <input type="number" name="duration" class="form-control" id="duration"
+                                    placeholder="Number of Months" required>
+                            </div>
+                            
+                            <button type="submit" class="btn form-control btn-primary">Submit</button>
+                        </form>
+                    </div>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

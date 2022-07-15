@@ -6,6 +6,8 @@ from logger.myLogger import getmylogger
 logger = getmylogger(__name__)
 
 
+
+
 def webscrap_data(config_path):
     config = read_params(config_path)
     args_dict_json = config["scraper"]["args_dict_path"]

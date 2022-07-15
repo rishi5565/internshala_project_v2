@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Internshala Stats and Recommendation</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
+</head>
+<body>
+
+    <div class="container">
+        <h4 class="text-center">Custom Recommended Internships</h4><br>            
+        <table class="table table-striped table-hover">
+    <thead>
+        <tr>
+          <th>Title</th>
+          <th>Company</th>
+          <th>Duration</th>
+          <th>Stipend</th>
+          <th>Apply By</th>
+          <th>Openings</th>
+          <th>Link</th>
+        </tr>
+      </thead>
+
+
+
+    <tbody>
+        <!-- jinja2 Technique -->
+        {% if d %}  
+        {% for i in d %}
+          <tr>
+            <td>{{i.title}}</td>
+            <td>{{i.company}}</td>
+            <td>{{i.duration}}</td>
+            <td>{{i.stipend}}</td>
+            <td>{{i.apply_by}}</td>
+            <td>{{i.openings}}</td>
+            <td><a href="{{i.url}}">Go to</a></td>
+
+          </tr>
+        {% endfor %}
+        {% endif %}
+        </tbody>
+
+
+          </table>
+    </div>
+
+
+
+
+
+
+
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

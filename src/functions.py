@@ -4,6 +4,10 @@ import yaml
 import json
 from collections import Counter
 import operator
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
 
 def read_params(config_path):
     with open(config_path) as yaml_file:
@@ -42,6 +46,16 @@ def validate_duration(duration):
     except:
         raise AttributeError("Enter number of months as integer in duration.")
 
+def dump_json(dump_file_path, dictionary):
+    with open(dump_file_path, "w") as f:
+        json.dump(dictionary, f)
+        f.close()
+
+def load_json(json_file_path):
+    with open(json_file_path, "r") as f:
+        json_file = json.load(f)
+        f.close()
+        return json_file
 
 def get_stats(prp_data_path):
 
@@ -49,29 +63,40 @@ def get_stats(prp_data_path):
     stats_dict = {}
 
     #### DURATION ####
-    stats_dict['duration_avg'] = round(df["duration"].mean())
-    stats_dict['duration_min'] = round(df["duration"].min())
-    stats_dict['duration_min_count'] = (df["duration"] == stats_dict['duration_min']).sum()
-    stats_dict['duration_max'] = round(df["duration"].max())
-    stats_dict['duration_max_count'] = (df["duration"] == stats_dict['duration_max']).sum()
+    duration_avg = round(df["duration"].mean())
+    duration_min = round(df["duration"].min())
+    duration_min_count = (df["duration"] == duration_min).sum()
+    duration_max = round(df["duration"].max())
+    duration_max_count = (df["duration"] == duration_max).sum()
+    stats_dict["avg_dur"] = f"Average duration is {duration_avg} month(s)"
+    stats_dict["min_dur"] = f"Minimum duration is {duration_min} month(s) offered by {duration_min_count} internship(s)"
+    stats_dict["max_dur"] = f"Maximum duration is {duration_max} month(s) offered by {duration_max_count} internship(s)"
 
     #### STIPEND ####
-    stats_dict['stipend_avg'] = round(df["stipend"].mean())
-    stats_dict['stipend_max'] = round(df["stipend"].max())
-    stats_dict['stipend_max_count'] = (df["stipend"] == stats_dict['stipend_max']).sum()
+    stipend_avg = round(df["stipend"].mean())
+    stipend_max = round(df["stipend"].max())
+    stipend_max_count = (df["stipend"] == stipend_max).sum()
+    stats_dict["st_avg"] = f"Average stipend is Rs.{stipend_avg} / month"
+    stats_dict["st_max"] = f"Maximum stipend is Rs.{stipend_max} / month offered by {stipend_max_count} internship(s)"
 
     #### APPLY BY ####
-    stats_dict['least_days'] = df["apply_by"].sort_values()[0:1].tolist()[0]
-    stats_dict['least_days_internship_count'] = (df["apply_by"] == stats_dict['least_days']).sum()
+    least_days = df["apply_by"].sort_values()[0:1].tolist()[0]
+    least_days_internship_count = (df["apply_by"] == least_days).sum()
+    if least_days <= 0:
+        stats_dict["least_count"] = f"Hurry up! {least_days_internship_count} internships expiring by today!!!"
+    else:
+        stats_dict["least_count"] = f"Hurry up! {least_days_internship_count} internships expiring in {least_days} day(s)!"
 
     #### APPLICANTS ####
-    stats_dict['early_appl_stage'] = (df["applicants"] == 0).sum()
-    stats_dict['thousand_plus'] = (df["applicants"] == 1000).sum()
+    early_appl_stage = (df["applicants"] == 0).sum()
+    thousand_plus = (df["applicants"] == 1000).sum()
+    stats_dict["eas"] = f"{early_appl_stage} internships are in early application stage, apply fast !!!"
+    stats_dict["tplus"] = f"{thousand_plus} internships have 1000+ applicants, not very likely to receive response..."
 
-    stats_dict['applicants_series'] = df[(df["applicants"] != 0) & (df["applicants"] != 1000)]["applicants"]
-    stats_dict['applicants_avg'] = round(stats_dict['applicants_series'].mean())
-    stats_dict['applicants_min'] = round(stats_dict['applicants_series'].min())
-    stats_dict['applicants_max'] = round(stats_dict['applicants_series'].max())
+    applicants_series = df[(df["applicants"] != 0) & (df["applicants"] != 1000)]["applicants"]
+    applicants_avg = round(applicants_series.mean())
+    stats_dict["appl_avg"] = f"Average applicants is {applicants_avg} / internship"
+
 
     #### SKILLS ####
     s_list = []
@@ -80,12 +105,22 @@ def get_stats(prp_data_path):
     skill_cnt = dict(Counter(s_list))
     skill_cnt_dict = dict(sorted(skill_cnt.items(), key=operator.itemgetter(1),reverse=True))
     skill_count_df = pd.DataFrame(skill_cnt_dict.items(), columns=['Skill', 'Count'])
-    stats_dict['top10_skill_df'] = skill_count_df[:10]
+    top10_skill_sr = skill_count_df[:10].set_index("Skill").squeeze()
+    sns.set()
+    ax = sns.barplot(x = top10_skill_sr.values, y = top10_skill_sr.index, color='b')
+    abs_values = top10_skill_sr.values
+    ax.bar_label(container=ax.containers[0], labels=abs_values)
+    plt.title("Most Demanded 10 Skills")
+    plt.xlabel("Count")
+    plt.ylabel("Skill")
+    plt.savefig("webapp/static/top10skill.png", bbox_inches = "tight")
+    plt.close()
+
 
     all_skills = []
     for skills in df["skills"]:
         all_skills += skills
-    stats_dict["all_skills"] = list(set(all_skills))
+    stats_dict["all_skills"] = ", ".join(list(set(all_skills)))
 
     #### PERKS ####
     p_list = []
@@ -93,13 +128,30 @@ def get_stats(prp_data_path):
         p_list += i
     perk_cnt = dict(Counter(p_list))
     perk_cnt_dict = dict(sorted(perk_cnt.items(), key=operator.itemgetter(1),reverse=True))
-    perk_count_df = pd.DataFrame(perk_cnt_dict.items(), columns=['Skill', 'Count'])
-    stats_dict['top10_perk_df'] = perk_count_df[:5]
+    perk_count_df = pd.DataFrame(perk_cnt_dict.items(), columns=['Perks', 'Count'])
+    top5_perk_sr = perk_count_df[:5].set_index("Perks").squeeze()
+    ax = sns.barplot(x = top5_perk_sr.values, y = top5_perk_sr.index, color='b')
+    abs_values = top5_perk_sr.values
+    ax.bar_label(container=ax.containers[0], labels=abs_values)
+    plt.title("Most Offered 5 Perks")
+    plt.xlabel("Count")
+    plt.ylabel("Perk")
+    plt.savefig("webapp/static/top5perk.png", bbox_inches = "tight")
+    plt.close()
+
 
     #### OPENINGS ####
-    stats_dict['openings_avg'] = round(df["openings"].mean())
-    stats_dict['openings_max'] = round(df["openings"].max())
+    openings_avg = round(df["openings"].mean())
+    openings_max = round(df["openings"].max())
+    stats_dict["avg_opn"] = f"Average openings is {openings_avg} / internship"
+    stats_dict["max_opn"] = f"Maximum openings in an internship is {openings_max}"
 
     return stats_dict
+
+#     with open("stats_dict.json", "w") as f:
+#         json.dump(stats_dict, f)
+#         f.close()
+
+# get_stats("data/processed/prp_data.csv")
 
 

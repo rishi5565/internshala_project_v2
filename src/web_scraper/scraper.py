@@ -110,3 +110,5 @@ def scraper(args_dict):
 #     "wfh": "yes",
 #     "location": []
 # })
+
+# scraper({'category': ['Data Science'], 'wfh': 'yes', 'location': []})
