@@ -7,3 +7,5 @@ tox
 pytest
 flake8
 gunicorn
+matplotlib
+seaborn
