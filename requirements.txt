@@ -2,3 +2,8 @@ pandas
 dvc
 numpy
 bs4
+flask
+tox
+pytest
+flake8
+gunicorn

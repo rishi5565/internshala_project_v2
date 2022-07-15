@@ -1,11 +1,7 @@
-
 from flask import Flask , jsonify, request, render_template, redirect, url_for
 import os
 import sys
-import html
-
 import json
-
 from matplotlib.font_manager import json_load
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'src/')))
 from src.load_validate_preprocess import preprocess_validated_data
@@ -83,17 +79,6 @@ def recommend():
     return render_template("recommend.html", d=data)
 
 
-
-
-
-
-
-
-# def prediction():
-#     if request.method == "POST":
-#         user_input_dict = request.json
-#         recommended_df = get_recommendation(user_input_dict)
-#         return jsonify(recommended_df.to_dict())
 
 
 
