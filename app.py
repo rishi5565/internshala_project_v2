@@ -8,7 +8,7 @@ from src.prediction_service import get_recommendation
 from src.web_scraper.scraper import scraper
 from src.functions import get_stats, dump_json, load_json
 
-
+prp_data_path = "data/processed/prp_data.csv"
 config_path = "params.yaml"
 
 webapp_root = "webapp"
@@ -33,9 +33,13 @@ def home():
         if args_dict["location"] == [""]:
             args_dict["location"] = []
         print(args_dict)
-        scraper(args_dict)
-        preprocess_validated_data(config_path)
-        return redirect(url_for("dashboard"))
+        try:
+            scraper(args_dict)
+            preprocess_validated_data(config_path)
+            return redirect(url_for("dashboard"))
+        except Exception as e:
+            error = {"error": e}
+            return render_template("404.html", error=error)
     return render_template("home.html")
 
 @app.route("/dashboard", methods=["POST", "GET"])
@@ -50,7 +54,6 @@ def dashboard():
         print(input_dict)
         return redirect(url_for("recommend"))
 
-    prp_data_path = "data/processed/prp_data.csv"
     stats_dict = get_stats(prp_data_path)
     return render_template(
         "dashboard.html",
@@ -70,7 +73,6 @@ def dashboard():
 
 @app.route("/recommend")
 def recommend():
-    prp_data_path = "data/processed/prp_data.csv"
     user_input_dict = load_json("user_input_dict.json")
     rdf_table = get_recommendation(user_input_dict, prp_data_path).to_json(orient="records")
     data=[]
