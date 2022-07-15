@@ -2,7 +2,6 @@ from flask import Flask , jsonify, request, render_template, redirect, url_for
 import os
 import sys
 import json
-from matplotlib.font_manager import json_load
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'src/')))
 from src.load_validate_preprocess import preprocess_validated_data
 from src.prediction_service import get_recommendation
@@ -10,7 +9,6 @@ from src.web_scraper.scraper import scraper
 from src.functions import get_stats, dump_json, load_json
 
 
-prp_data_path = "data/processed/prp_data.csv"
 config_path = "params.yaml"
 
 webapp_root = "webapp"
@@ -52,6 +50,7 @@ def dashboard():
         print(input_dict)
         return redirect(url_for("recommend"))
 
+    prp_data_path = "data/processed/prp_data.csv"
     stats_dict = get_stats(prp_data_path)
     return render_template(
         "dashboard.html",
@@ -71,7 +70,7 @@ def dashboard():
 
 @app.route("/recommend")
 def recommend():
-    # return "okaay"
+    prp_data_path = "data/processed/prp_data.csv"
     user_input_dict = load_json("user_input_dict.json")
     rdf_table = get_recommendation(user_input_dict, prp_data_path).to_json(orient="records")
     data=[]

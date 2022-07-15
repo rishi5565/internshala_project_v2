@@ -7,9 +7,6 @@ stages:
     - src/functions.py
     - src/logger/myLogger.py
     - params.yaml
-    outs:
-    - data/raw/raw_scraped.csv
-
   validate_and_preprocess:
     cmd: python src/load_validate_preprocess.py --config=params.yaml
     deps:
@@ -20,8 +17,6 @@ stages:
     - src/logger/myLogger.py
     - src/load_validate_preprocess.py
     - params.yaml
-    outs:
-    - data/processed/prp_data.csv
 
 #   preprocess_and_split_data:
 #     cmd: python src/preprocess_data.py --config=params.yaml
